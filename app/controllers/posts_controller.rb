@@ -1,11 +1,6 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
-
-  # GET /posts
-  # GET /posts.json
-  def index
-    @posts = Post.order(updated_at: :desc).page params[:page]
-  end
+  before_action :set_post, only: [:show]
+  before_action :set_my_post, only: [:edit, :update, :destroy]
 
   # GET /posts/1
   # GET /posts/1.json
@@ -58,7 +53,7 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     respond_to do |format|
-      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
+      format.html { redirect_to root_url, notice: 'Post was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -68,6 +63,11 @@ class PostsController < ApplicationController
     def set_post
       @post = Post.find(params[:id])
     end
+
+    def set_my_post
+      @post = Post.where(user: current_user).find(params[:id])
+    end
+
 
     # Only allow a list of trusted parameters through.
     def post_params

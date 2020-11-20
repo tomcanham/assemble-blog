@@ -1,2 +1,29 @@
-%h1 Home#index
-%p Find me in app/views/home/index.html.haml
+%h1 Welcome to the Assemble Blog!
+
+%h1 Recent posts
+
+= paginate @posts
+
+%table
+  %thead
+    %tr
+      %th User
+      %th Title
+      %th Last Modified
+      - if user_signed_in?
+        %th
+        %th
+
+  %tbody
+    - @posts.each do |post|
+      %tr
+        %td= post.user.email
+        %td= link_to post.title, post
+        %td= post.updated_at
+        - if user_signed_in? && current_user == post.user
+          %td= link_to 'Edit', edit_post_path(post)
+          %td= link_to 'Delete', post, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Post', new_post_path

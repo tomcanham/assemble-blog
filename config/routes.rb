@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   authenticate :user do
     resources :posts, only: [:new, :create, :edit, :update, :destroy]
   end
-  resources :posts, only: [:index, :show]
+  resources :posts, only: [:show]
 
   get 'home/index'
   root to: 'home#index'
