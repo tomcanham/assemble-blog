@@ -21,4 +21,4 @@ Ran out of time to:
 * Pretty the blog up (was working on a flexbox styling system, seen in the SCSS).
 * Add "username" as opposed to email address (probably just add a User attribute with a uniqueness constraint)
 * Add true nav bar (as opposed to just links in a nav element)
-
+* Add mongoid-history stuff
