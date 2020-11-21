@@ -1,4 +1,5 @@
-%h1 Recent Posts
+%h1 My Posts
+
 
 #posts
   = paginate @posts
@@ -6,7 +7,6 @@
   - @posts.each do |post|
     .post
       .info
-        .user= post.user.email
         .title= link_to post.title, "#{post.created_at.strftime('%F')}/#{post.id}"
       .body= truncate(post.body, length: 400)
       - if user_signed_in? && current_user == post.user

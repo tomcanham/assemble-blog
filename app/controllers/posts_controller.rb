@@ -2,6 +2,12 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show]
   before_action :set_my_post, only: [:edit, :update, :destroy]
 
+  # GET /posts
+  # GET /posts.json
+  def index
+    @posts = Post.where(user: current_user).order(updated_at: :desc).page params[:page]
+  end
+
   # GET /posts/1
   # GET /posts/1.json
   def show
@@ -53,7 +59,7 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     respond_to do |format|
-      format.html { redirect_to root_url, notice: 'Post was successfully destroyed.' }
+      format.html { redirect_to posts_path, notice: 'Post was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

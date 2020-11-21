@@ -13,3 +13,8 @@
  *= require_tree .
  *= require_self
  */
+
+.post {
+  background-color: silver;
+  margin: 1rem;
+}
