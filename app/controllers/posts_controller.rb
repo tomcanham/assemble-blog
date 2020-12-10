@@ -1,11 +1,12 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show]
   before_action :set_my_post, only: [:edit, :update, :destroy]
+  before_action :authorize, only: [:show, :edit, :update, :destroy]
 
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.where(user: current_user).order(updated_at: :desc).page params[:page]
+    @posts = current_user.posts.order(updated_at: :desc).page params[:page]
   end
 
   # GET /posts/1
@@ -71,12 +72,22 @@ class PostsController < ApplicationController
     end
 
     def set_my_post
-      @post = Post.where(user: current_user).find(params[:id])
+      if current_user.admin?
+        @post = Post.find(params[:id])
+      else
+        @post = Post.where(user: current_user).find(params[:id])
+      end
     end
 
 
     # Only allow a list of trusted parameters through.
     def post_params
       params.require(:post).permit(:title, :body)
+    end
+
+    def authorize
+      unless @post.can_i?(current_user, action_name)
+        raise ApplicationController::NotAuthorized
+      end
     end
 end

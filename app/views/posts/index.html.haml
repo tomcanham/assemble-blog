@@ -7,11 +7,13 @@
   - @posts.each do |post|
     .post
       .info
-        .title= link_to post.title, "#{post.created_at.strftime('%F')}/#{post.id}"
+        .title= link_to post.title, post.slug
       .body= truncate(post.body, length: 400)
-      - if user_signed_in? && current_user == post.user
+      - if user_signed_in?
         .actions
-          %span.edit= link_to 'Edit', edit_post_path(post)
-          %span.delete= link_to 'Delete', post, method: :delete, data: { confirm: 'Are you sure?' }
+          - if post.can_i?(current_user, :edit)
+            %span.edit= link_to 'Edit', edit_post_path(post)
+          - if post.can_i?(current_user, :delete)
+            %span.delete= link_to 'Delete', post, method: :delete, data: { confirm: 'Are you sure?' }
 
 = link_to 'New Post', new_post_path
